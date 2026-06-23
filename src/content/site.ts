@@ -140,18 +140,15 @@ export const about = {
 } as const;
 
 export const techStack = [
-  "n8n",
-  "Flowise",
-  "Next.js",
-  "Supabase",
-  "Agentic AI",
-  "LLM's (OpenAI, Anthropic, Gemini, etc.)",
-  "trigger.dev",
-  "Slack",
-  "Telegram",
-  "PostgreSQL",
-  "Vercel",
-  "Stripe",
+  "Workflow Automation Tools (n8n, Flowise, trigger.dev)",
+  "Programming Languages (Python, JavaScript, TypeScript, C#, Rust)",
+  "Database integrations (PostgreSQL, MySQL, MongoDB)",
+  "Agentic AI & LLM's (OpenAI, Anthropic, Gemini)",
+  "Communication Tools (Slack, Telegram, Teams)",
+  "Cloud Services (Vercel, AWS, Azure, Google Cloud)",
+  "Payment Processing (Stripe, PayPal)",
+  "IoT - Internet of Things (MQTT, HiveMQ, Home Assistant, etc.)",
+  "and many more...",
 ] as const;
 
 export const insights = [
