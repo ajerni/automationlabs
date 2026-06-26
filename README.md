@@ -47,3 +47,14 @@ To add a new section:
 ## Design tokens
 
 Colors and animations are defined in `src/app/globals.css` under `:root` and `@theme inline`.
+
+## Hosting (Docker + Traefik)
+
+Production runs on your vserver via Docker:
+
+```bash
+docker compose up -d --build
+```
+
+Point `www.automationlabs.ch` A record to your vserver IP. Traefik handles HTTPS (see `docker-compose.yml`).
+
