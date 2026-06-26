@@ -1,0 +1,50 @@
+version: "3.7"
+
+volumes:
+  n8n_storage:
+
+networks:
+  adminer-postgres-net:
+  n8n-net:
+  iotnetwork:
+    external: true
+
+services:
+
+  n8n:
+    image: docker.n8n.io/n8nio/n8n
+    container_name: n8n
+    restart: always
+    environment:
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=pdb
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=n8ndb
+      - DB_POSTGRESDB_USER=postgres
+      - DB_POSTGRESDB_PASSWORD=andiadmin
+      - N8N_HOST=n8n.ernilabs.com
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=https
+      - NODE_ENV=production
+      - WEBHOOK_URL=https://n8n.ernilabs.com/
+    volumes:
+      - n8n_storage:/home/node/.n8n
+    networks:
+      - iotnetwork
+      - n8n-net
+      - adminer-postgres-net
+    labels:
+      - traefik.enable=true
+      # HTTP router - redirects to HTTPS
+      - traefik.http.routers.n8n-http.rule=Host(`n8n.ernilabs.com`)
+      - traefik.http.routers.n8n-http.entrypoints=iotnetwork
+      - traefik.http.routers.n8n-http.middlewares=n8n-redirect
+      # HTTPS router (using unique name to avoid conflicts)
+      - traefik.http.routers.n8n-https.rule=Host(`n8n.ernilabs.com`)
+      - traefik.http.routers.n8n-https.entrypoints=websecure
+      - traefik.http.routers.n8n-https.tls=true
+      - traefik.http.routers.n8n-https.tls.certresolver=lets-encrypt
+      - traefik.http.services.n8n.loadbalancer.server.port=5678
+      # Redirect middleware
+      - traefik.http.middlewares.n8n-redirect.redirectscheme.scheme=https
+      - traefik.http.middlewares.n8n-redirect.redirectscheme.permanent=true

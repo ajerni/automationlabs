@@ -1,0 +1,28 @@
+version: "3.7"
+
+networks:
+  iotnetwork:
+    external: true
+
+services:
+  automationlabs:
+    build: .
+    image: automationlabs:latest
+    container_name: automationlabs
+    restart: always
+    networks:
+      - iotnetwork
+    labels:
+      - traefik.enable=true
+      # HTTP → HTTPS redirect
+      - traefik.http.routers.automationlabs-http.rule=Host(`www.automationlabs.ch`)
+      - traefik.http.routers.automationlabs-http.entrypoints=iotnetwork
+      - traefik.http.routers.automationlabs-http.middlewares=automationlabs-redirect
+      # HTTPS
+      - traefik.http.routers.automationlabs-https.rule=Host(`www.automationlabs.ch`)
+      - traefik.http.routers.automationlabs-https.entrypoints=websecure
+      - traefik.http.routers.automationlabs-https.tls=true
+      - traefik.http.routers.automationlabs-https.tls.certresolver=lets-encrypt
+      - traefik.http.services.automationlabs.loadbalancer.server.port=80
+      - traefik.http.middlewares.automationlabs-redirect.redirectscheme.scheme=https
+      - traefik.http.middlewares.automationlabs-redirect.redirectscheme.permanent=true
