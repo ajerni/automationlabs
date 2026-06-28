@@ -15,11 +15,11 @@ services:
     labels:
       - traefik.enable=true
       # HTTP → HTTPS redirect
-      - traefik.http.routers.automationlabs-http.rule=Host(`www.automationlabs.ch`)
+      - traefik.http.routers.automationlabs-http.rule=Host(`www.automationlabs.ch`) || Host(`automationlabs.ch`)
       - traefik.http.routers.automationlabs-http.entrypoints=iotnetwork
       - traefik.http.routers.automationlabs-http.middlewares=automationlabs-redirect
       # HTTPS
-      - traefik.http.routers.automationlabs-https.rule=Host(`www.automationlabs.ch`)
+      - traefik.http.routers.automationlabs-https.rule=Host(`www.automationlabs.ch`) || Host(`automationlabs.ch`)
       - traefik.http.routers.automationlabs-https.entrypoints=websecure
       - traefik.http.routers.automationlabs-https.tls=true
       - traefik.http.routers.automationlabs-https.tls.certresolver=lets-encrypt
